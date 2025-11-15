@@ -1,0 +1,14 @@
+Django>=4.2
+djangorestframework
+psycopg2-binary
+gunicorn
+celery
+redis
+pandas
+numpy
+scikit-learn
+xgboost
+lightgbm
+shap
+requests
+python-dotenv

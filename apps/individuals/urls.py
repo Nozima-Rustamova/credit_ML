@@ -1,7 +1,6 @@
-from django.urls import path, include
-from django.contrib import admin
+from django.urls import path
+from .views import IndividualCreditView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/individuals/', include('apps.individuals.urls')),
+    path('score/', IndividualCreditView.as_view(), name='individual-score'),
 ]

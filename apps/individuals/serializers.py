@@ -1,28 +1,18 @@
 from rest_framework import serializers
-from .models import IndividualCreditProfile
+from .models import IndividualCreditProfile, PredictionLog
 
-class IndividualCreditSerializer(serializers.ModelSerializer):
+class IndividualCreditProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndividualCreditProfile
         fields = '__all__'
-        read_only_fields=('id', 'status', 'score', 'model_version', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'status', 'score', 'model_version', 'created_at', 'updated_at', 'explanation')
 
-        def validate_yearly_income(self, value):
-            if value is not None and value < 0:
-                raise serializers.ValidationError("Yearly income must be non-negative.")
-            return value
-        
-        def validate_existing_debt(self, value):
-            if value is not None and value < 0:
-                raise serializers.ValidationError("Existing debt must be non-negative.")
-            return value
-        
-        def validate_requested_amount(self, value):
-            if value is not None and value <= 0:
-                raise serializers.ValidationError("Requested amount must be positive.")
-            return value
-        
-        def validate_term_months(self, value):
-            if value is not None and value <= 0:
-                raise serializers.ValidationError("Term months must be positive.")
-            return value
+class PredictionLogSerializer(serializers.ModelSerializer):
+    # convenience fields to surface the attached object
+    content_type = serializers.CharField(source='content_type.model', read_only=True)
+    object_id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = PredictionLog
+        fields = ('id', 'content_type', 'object_id', 'score', 'model_version', 'explanation', 'features', 'created_at')
+        read_only_fields = ('id', 'content_type', 'object_id', 'score', 'model_version', 'explanation', 'features', 'created_at')

@@ -12,8 +12,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  
+  # snippet to add inside your docker-compose.yml
   redis:
-    image: redis:7
+    image: redis:6-alpine
+    restart: unless-stopped
     ports:
       - "6379:6379"
 

@@ -1,6 +1,17 @@
 from django.db import models
 
 class CompanyCreditProfile(models.Model):
+    # add these constants and field inside CompanyCreditProfile model
+    STATUS_PENDING = "pending"
+    STATUS_APPROVED = "approved"
+    STATUS_REJECTED = "rejected"
+    STATUS_CHOICES = [
+    (STATUS_PENDING, "Pending"),
+    (STATUS_APPROVED, "Approved"),
+    (STATUS_REJECTED, "Rejected"),
+    ]
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
     company_name=models.CharField(max_length=255)
     tax_id=models.CharField(max_length=100, null=True, blank=True)
     incorporated_date=models.DateField(null=True, blank=True)

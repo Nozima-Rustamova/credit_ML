@@ -44,3 +44,41 @@ class IndividualCreditProfile(models.Model):
 
     def __str__(self):
         return f"{self.full_name} ({self.id})"
+
+
+class PredictionLog(models.Model):
+    """
+    Audit log for predictions. One record per prediction event.
+    Links (optionally) to an IndividualCreditProfile or a CreditRequest so you can
+    query logs by profile or by request. Keep the explanation small (top-k drivers).
+    """
+    profile = models.ForeignKey(
+        "individuals.IndividualCreditProfile",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="prediction_logs",
+    )
+    credit_request = models.ForeignKey(
+        "credit_requests.CreditRequest",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="prediction_logs",
+    )
+
+    score = models.IntegerField(null=True, blank=True)
+    model_version = models.CharField(max_length=128, null=True, blank=True)
+    explanation = models.JSONField(null=True, blank=True)
+    meta = models.JSONField(null=True, blank=True)  # optional: store raw features, request metadata, user id, ip, etc.
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Prediction Log"
+        verbose_name_plural = "Prediction Logs"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        target = f"profile={self.profile_id}" if self.profile_id else f"credit_request={self.credit_request_id}"
+        return f"PredictionLog({self.id}) {target} score={self.score}"

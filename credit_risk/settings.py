@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.individuals',
     'apps.scoring_engine.ml',
+    'apps.companies',
+    'apps.credit_requests',
+    'apps.external_integrations',
     
 ]
 

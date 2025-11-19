@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/individuals/', include('apps.individuals.urls')),
     path('api/companies/', include('apps.companies.urls')),
+    path('api/credit-requests/', include('apps.credit_requests.urls')),
+    path('api/external/', include('apps.external_integrations.urls')),
 
 ]
